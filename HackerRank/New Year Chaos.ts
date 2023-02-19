@@ -29,3 +29,18 @@ function minimumBribes2(q) {
         console.log('Too chaotic') :
         console.log(bribes);
 }
+
+function minimumBribes3(q) {
+    let cnt   = 0;
+    const len = q.length;
+    for(let i=0; i<len; i++){
+        if(q[i]>i+3){
+            console.log("Too chaotic");
+            return;
+        }
+        for(let j=Math.max(q[i]-2,0); j<i; j++){
+            if(q[j]>q[i]) cnt++;
+        }
+    }
+    console.log(cnt);
+}
