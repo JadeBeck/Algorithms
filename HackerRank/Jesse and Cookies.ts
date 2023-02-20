@@ -1,3 +1,8 @@
+// Inside the first stack is the copied sorted list.
+// Inside the second stack will be all calculated values (1cookie +2x 2cookie).
+// This stack is automatically sorted due to the increase in values.
+// When extracting a value, select the minimum between the two stacks.
+
 function cookies(k, A) {
     let i = 0,    // "Pointer" for A to avoid the need to shift
         j = 0,      // "Pointer" for C to avoid the need to shift
@@ -8,19 +13,19 @@ function cookies(k, A) {
     // Sort the initial array
     A.sort((a, b) => a - b);
 
-    // Some shortcuts to speedup the edges
+    // Some shortcuts to speed up the edges
     if (A[0] >= k) return 0;
     if (A.length < 2) return -1;
 
     // Iterate while there are values in one of the arrays
-    // C.lenght-1 has to do with the formula C[j] + 2 * C[j + 1]
+    // C.length - 1 has to do with the formula C[j] + (2 * C[j + 1])
     while (i < A.length || j < C.length - 1) {
-
         // In case A is empty, use only C
         if (i >= A.length) {
-            res = C[j] + 2 * C[j + 1];
+            res = C[j] + (2 * C[j + 1]);
             j += 2;  // Same effect of shift() twice, but less expensive
-        } else {
+        }
+        else {
             // Take the min between the two arrays
             // j >= C.length avoids error in the first run, where C is empty
             if (A[i] < C[j] || j >= C.length) {
@@ -42,7 +47,6 @@ function cookies(k, A) {
             }
             res = a + 2 * b;
         }
-
         C.push(res); // Push the new calculated value
         n++;         // Increment count
 
