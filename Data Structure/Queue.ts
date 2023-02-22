@@ -4,13 +4,13 @@ class Queue {
     constructor () {
         this._arr = [];
     }
-    enqueue(item: any) {
+    enqueue(item: any) {  //데이터 넣기
         this._arr.push(item);
     }
-    dequeue(){
+    dequeue(){  //데이터 추출하기
         this._arr.shift();
     }
-    peek() {
+    peek() {  //맨 앞의 데이터 확인하기
         return this._arr[0];
     }
 }

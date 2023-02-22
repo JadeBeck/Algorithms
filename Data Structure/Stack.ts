@@ -4,13 +4,13 @@ class Stack {
     constructor () {
         this._arr = [];
     }
-    push(item:any) {
+    push(item:any) {  //데이터 넣기
         this._arr.push(item);
     }
-    pop() {
+    pop() {  //데이터 추출하기
         this._arr.pop();
     }
-    peek() {
+    peek() {  //맨 나중에 집어넣은 데이터 확인
         return this._arr[this._arr.length - 1];
     }
 }
