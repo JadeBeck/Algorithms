@@ -20,20 +20,27 @@ public class Main {
             for (int i = a + 1; i < b; i++) {
                 Array.add(i);
             }
-        } else if(a>b) {
-            for(int i = b + 1; i < a; i++) {
-                Array.add(i);
-            }
-        } /*else {
-            Array.add(0);
-        }*/
-        //System.out.println(Array);
-         for (Integer i : Array) { // for문을 통한 전체출력
+            for (Integer i : Array) { // for문을 통한 전체출력
             if(i != b - 1) {
                 System.out.print(i + " ");
             } else {
                 System.out.print(i);
             }
         }
+        } else if(a>b) {
+            for(int i = b + 1; i < a; i++) {
+                Array.add(i);
+            }
+            for (Integer i : Array) { // for문을 통한 전체출력
+            if(i != a - 1) {
+                System.out.print(i + " ");
+            } else {
+                System.out.print(i);
+            }
+        }
+        } /*else {
+            Array.add(0);
+        }*/
+        //System.out.println(Array);
     }
 }
