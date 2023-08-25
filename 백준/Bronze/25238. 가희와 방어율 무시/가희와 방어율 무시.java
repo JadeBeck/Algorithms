@@ -9,10 +9,13 @@ public class Main {
 
         if (a < 100) System.out.println(1);
         else {
-            float A = a * (100 - b) / 100;
-            
-            if (A >= 100) System.out.println(0);
+            a = a * (100 - b) / 100;
+            if (a >= 100) System.out.println(0);
             else System.out.println(1);
+
+//            float A = a * (100 - b) / 100;
+//            if (A >= 100) System.out.println(0);
+//            else System.out.println(1);
         }
     }
 }
