@@ -19,7 +19,7 @@ public class Main {
         for (int i = 0; i < count.length; i++) {
             if (max < count[i]) {
                 max = count[i];
-                answer = (char) (i + 'A');
+                answer = (char) (i + 'A');  //아스키코드 문자 ↔ 숫자
             } else if (max == count[i]) {
                 answer = '?';
             }
