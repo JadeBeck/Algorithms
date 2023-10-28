@@ -1,108 +1,64 @@
+import java.io.*;
+import java.util.*;
+
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
+// 0001 -> 1번 도시 방문
+// 1010 -> 2번, 4번 방문
+// 1101 -> 1, 3, 4번 도시 방문
+// dp[][] -> 현재 i번 도시에 있고, 거쳐온 도시가 j일 때, 남은 도시를 방문하는데 필요한 최소 비용
+// dp[3][1100101] -> 1, 3, 6, 7 도시를 거쳐서 현재 3번 도시일 때 남은 2 4 5를 방문하는 데 드는 최소 비용
 public class Main {
-  static int[][] map = new int[16][16];
-  static int[][] dp = new int[16][1 << 16];
-  static int n, visited;
-  static int INF = Integer.MAX_VALUE - 1000000;
+    static int N, allMask, INF = 999_999_999;
+    static int[][] W;
+    static int[][] dp;
+    public static void main(String[] args) throws Exception {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        N = Integer.parseInt(br.readLine());  //도시의 수
+        W = new int[N][N];
 
-  private void solve() {
-    n = sc.nextInt();
+        allMask = ( 1 << N ) - 1; // N 이 5이면 1<<5 => 100000 ==> 1을 빼면 11111 (5자리가 모두 1, 즉 모든 도시를 방문한 상태)
+        dp = new int[N][allMask]; // ㅇㅎ............. 현재 i번 도시에 있고, 거쳐온 도시가 j일 때, 남은 도시를 방문하는데 필요한 최소 비용
 
-    for (int i = 0; i < n; i++) {
-      for (int j = 0; j < n; j++) {
-        map[i][j] = sc.nextInt();
-      }
-    }
-
-    System.out.println(tsp(0, 1));
-  }
-
-  int tsp(int current, int visited) {
-    // 모두 방문
-    if ((visited == (1 << n) - 1)) {
-      // 마지막 도시에서 0번 도시로 돌아갈 수 없을 경우.
-      if (map[current][0] == 0) {
-        return INF;
-      }
-      return map[current][0];
-    }
-    // 이미 방문한 적이 있다
-    if (dp[current][visited] != 0) {
-      return dp[current][visited];
-    }
-
-    dp[current][visited] = INF;
-    for (int k = 0; k < n; k++) {
-      int next = 1 << k;
-      if (map[current][k] == 0 || (visited & next) > 0) {
-        // 갈 수 없거나, 방문했다면 건너뜀.
-        continue;
-      }
-      // 현재 도시(current)에서 방문한 도시들(visited) 일때 도시 전체를 순회한 최소 비용.
-      dp[current][visited] = Math.min(dp[current][visited], tsp(k, visited | next) + map[current][k]);
-    }
-    return dp[current][visited];
-  }
-
-  public static void main(String[] args) {
-    sc.init();
-
-    new Main().solve();
-  }
-
-  static class sc {
-    private static BufferedReader br;
-    private static StringTokenizer st;
-
-    static void init() {
-      br = new BufferedReader(new InputStreamReader(System.in));
-      st = new StringTokenizer("");
-    }
-
-    static String readLine() {
-      try {
-        return br.readLine();
-      } catch (IOException e) {
-      }
-      return null;
-    }
-
-    static String readLineReplace() {
-      try {
-        return br.readLine().replaceAll("\\s+", "");
-      } catch (IOException e) {
-      }
-      return null;
-    }
-
-    static String next() {
-      while (!st.hasMoreTokens()) {
-        try {
-          st = new StringTokenizer(br.readLine());
-        } catch (IOException e) {
+        //단순하게 도시간 이동 비용 정리한 행렬
+        for (int i = 0; i < N; i++) {
+            StringTokenizer st = new StringTokenizer(br.readLine());
+            for (int j = 0; j < N; j++) {
+                W[i][j] = Integer.parseInt(st.nextToken());
+            }
         }
-      }
-      return st.nextToken();
+
+        // 0번째 도시에서 출발
+        System.out.println(tsp(0, 1));
     }
 
-    static boolean hasNext() {
-      return st.hasMoreTokens();
-    }
 
-    static long nextLong() {
-      return Long.parseLong(next());
-    }
+    // 어느 도시에서 시작하든지 최소비용은 같기 때문에 편안하게 0번도시부터 시작하자
+    // @param: city - 현재 위치한 도시 인덱스, visitBitMask - 지금까지 방문한 도시 2진수
+    // DFS 알고리즘
+    static int tsp(int city, int visitBitmask) {
+        // 기저조건
+        if( visitBitmask == allMask ) { // 모든 도시를 방문한 상태 이므로, 처음(0번째 도시) 으로 되돌아가는 비용 처리
+            if(W[city][0] == 0) return INF;
+            else return W[city][0];
+        }
 
-    static int nextInt() {
-      return Integer.parseInt(next());
-    }
+        // 더 도시를 방문해야 한다.
+        if( dp[city][visitBitmask] != 0 ) return dp[city][visitBitmask];
 
-    static double nextDouble() {
-      return Double.parseDouble(next());
+        // 처음
+        dp[city][visitBitmask] = INF;
+
+        // 방문하지 않은 도시를 방문 (재귀)
+        for (int i = 0; i < N; i++) {
+            // 갈수 없거나, 이미 방문한 경우는 skip
+            if(W[city][i] == 0 || (visitBitmask & 1 << i) != 0) continue;
+
+            dp[city][visitBitmask] = Math.min( dp[city][visitBitmask], tsp(i, visitBitmask | ( 1<< i) ) + W[city][i] );
+        }
+
+        return dp[city][visitBitmask];
     }
-  }
 }
