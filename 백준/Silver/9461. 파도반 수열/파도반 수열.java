@@ -16,7 +16,7 @@ public class Main {
 		seq[3] = 1L;
 		
 		int T = Integer.parseInt(br.readLine());		
-		while(T-->0) {
+		while(T-- > 0) { //이거는... T 개수만큼 돌려고 하는 것..... 예제로 여러개가 들어오고, 그 여러개 다 결과 뽑는거라궁
 			sb.append(padovan(Integer.parseInt(br.readLine()))).append('\n');
 		}
 		System.out.println(sb);
