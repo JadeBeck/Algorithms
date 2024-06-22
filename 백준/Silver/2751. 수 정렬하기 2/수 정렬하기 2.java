@@ -36,28 +36,12 @@ public class Main {
         int index2 = middle_idx + 1;
         
         while (index1 <= middle_idx && index2 <= end_idx) {
-            if (tmp[index1] > tmp[index2]) {
-                arr[k] = tmp[index2];
-                k++;
-                index2++;
-            } else {
-                arr[k] = tmp[index1];
-                k++;
-                index1++;
-            }
+            if (tmp[index1] > tmp[index2]) arr[k++] = tmp[index2++];
+            else arr[k++] = tmp[index1++];
         }
         
-        while (index1 <= middle_idx) {
-            arr[k] = tmp[index1];
-            k++;
-            index1++;
-        }
-        
-        while (index2 <= end_idx) {
-            arr[k] = tmp[index2];
-            k++;
-            index2++;
-        }
+        while (index1 <= middle_idx) arr[k++] = tmp[index1++];
+        while (index2 <= end_idx) arr[k++] = tmp[index2++];
     }
 }
 /**
